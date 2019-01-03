@@ -16,7 +16,7 @@ class AutosizedTextarea(Textarea):
     def media(self):
         return forms.Media(js=('suit/js/autosize.min.js',))
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, renderer=None, attrs=None):
         output = super(AutosizedTextarea, self).render(name, value, attrs)
         output += mark_safe(
             "<script type=\"text/javascript\">django.jQuery(function () { autosize(document.getElementById('id_%s')); });</script>"
@@ -29,7 +29,7 @@ class CharacterCountTextarea(AutosizedTextarea):
     TextArea with character count. Supports also twitter specific count.
     """
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, renderer=None, attrs=None):
         output = super(CharacterCountTextarea, self).render(name, value, attrs)
         output += mark_safe(
             "<script type=\"text/javascript\">django.jQuery(function () { django.jQuery('#id_%s').suitCharactersCount(); });</script>"
@@ -38,7 +38,7 @@ class CharacterCountTextarea(AutosizedTextarea):
 
 
 class ImageWidget(ClearableFileInput):
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, renderer=None, attrs=None):
         html = super(ImageWidget, self).render(name, value, attrs)
         if not value or not hasattr(value, 'url') or not value.url:
             return html
@@ -68,7 +68,7 @@ class EnclosedInput(TextInput):
             value = '<i class="fa %s"></i>' % value
         return '<span class="input-group-%s">%s</span>' % (wrapper_class, value)
 
-    def render(self, name, value, attrs=None):
+    def render(self, name, value, renderer=None, attrs=None):
         output = super(EnclosedInput, self).render(name, value, attrs)
         div_classes = set()
         if self.prepend:
