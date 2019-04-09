@@ -120,6 +120,8 @@ class MenuManager(object):
                 if 'admin_url' not in native_model:
                     # Can happen with incomplete permissions, like Delete only, etc.
                     continue
+                if not native_model['admin_url']:
+                    continue
                 model_key = '.'.join(native_model['admin_url'].split('/')[-3:-1])
                 native_model['model'] = model_key
                 self._available_apps['models'][model_key] = native_model
